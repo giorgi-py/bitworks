@@ -26,10 +26,10 @@ SECRET_KEY = 'django-insecure-fyen!(6j*trty^!ih9h(i1!o#b7h46jj*-nd3#&$=g!ypti!=4
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = [
-    'https://bitworks-production.up.railway.app',
-    'https://*.railway.app',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://bitworks-production.up.railway.app',
+#     'https://*.railway.app',
+# ]
 
 # Application definition
 
@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
