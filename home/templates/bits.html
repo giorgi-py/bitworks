@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BITWORKS.GE - NES Style IP Tools & Web Utilities</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nes.css/2.3.0/css/nes.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Theme Variables */
+        :root {
+            --bg-color: #212529;
+            --text-color: #ffffff;
+            --container-bg: rgba(0, 0, 0, 0.85);
+            --navbar-bg: rgba(0, 0, 0, 0.9);
+            --accent-color: #92cc41;
+            --border-color: #ffffff;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --container-bg: rgba(255, 255, 255, 0.85);
+            --navbar-bg: rgba(255, 255, 255, 0.9);
+            --accent-color: #0066cc;
+            --border-color: #212529;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: var(--navbar-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--accent-color);
+        }
+
+        .nav-container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 16px;
+            text-decoration: none;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 10px;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            padding: 0.5rem;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent-color);
+            transition: 0.3s;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 1rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .nes-container {
+            background: transparent !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .nes-container.is-dark {
+            background: transparent !important;
+            border-color: #ffffff !important;
+        }
+
+        [data-theme="light"] .nes-container.is-dark {
+            background: transparent !important;
+            border-color: #212529 !important;
+        }
+
+        .nes-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        [data-theme="light"] .nes-container::before {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Force override NES.css background */
+        .nes-container.is-dark,
+        .nes-container.is-dark::after {
+            background-color: transparent !important;
+            background-image: none !important;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(146, 204, 65, 0.2);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--accent-color);
+            min-width: 80px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .info-value {
+            background: rgba(146, 204, 65, 0.1);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            user-select: all;
+            cursor: text;
+            text-align: right;
+            flex: 1;
+            min-width: 0;
+            word-break: break-all;
+            transition: all 0.3s ease;
+        }
+
+        .info-value:hover {
+            background: rgba(146, 204, 65, 0.2);
+            border-color: #b8e356;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(146, 204, 65, 0.1);
+            border-left: 4px solid var(--accent-color);
+            font-size: 10px;
+        }
+
+        .tips-list .term {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Forms Section */
+        .forms-section {
+            margin: 2rem 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .nes-field {
+            margin-bottom: 1rem;
+        }
+
+        .nes-input, .nes-textarea, .nes-select {
+            background: var(--container-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .nes-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .code-title {
+            color: var(--accent-color);
+            font-size: 10px;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .code-content {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #f8f8f2;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .code-content .keyword { color: #66d9ef; }
+        .code-content .string { color: #a6e22e; }
+        .code-content .comment { color: #75715e; }
+        .code-content .number { color: #ae81ff; }
+        .code-content .function { color: #f92672; }
+
+        /* Footer */
+        .footer {
+            background: var(--navbar-bg);
+            color: var(--text-color);
+            text-align: center;
+            padding: 2rem 1rem;
+            border-top: 4px solid var(--accent-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-text {
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+                background: var(--navbar-bg);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 3rem;
+                transition: left 0.3s ease;
+                z-index: 999;
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu a {
+                font-size: 14px;
+                padding: 1rem;
+            }
+
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                margin-top: 80px;
+            }
+
+            .nav-container {
+                position: relative;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7eb82a;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Video Background -->
+    <video class="video-background" autoplay muted loop>
+        <source src="../../static/video/bitworks_ge_background.mp4" type="video/mp4">
+        <!-- Fallback for browsers that don't support video -->
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">BITWORKS.GE</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-controls">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- IP Information Grid -->
+            <div class="content-grid">
+                <!-- Left Column - IP Information -->
+                <div class="nes-container is-dark with-title fade-in">
+                    <p class="title">System Information</p>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">IP Address:</span>
+                            <span class="info-value" id="ip-value">{{ ip_show }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Location:</span>
+                            <span class="info-value" id="location-value">{{ location }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">ISP Provider:</span>
+                            <span class="info-value" id="isp-value">{{ isp.org }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Operating System:</span>
+                            <span class="info-value" id="os-value">{{ os.info }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Browser:</span>
+                            <span class="info-value" id="browser-value">{{ browser.info }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Port:</span>
+                            <span class="info-value" id="port-value">{{ port }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Tips & Tricks -->
+                <div class="nes-container is-dark with-title fade-in">
+                    <p class="title">Tips & Tricks</p>
+                    <ul class="tips-list">
+                        <li><span class="term">IP</span> - Internet Protocol</li>
+                        <li><span class="term">WWW</span> - World Wide Web</li>
+                        <li><span class="term">HTML</span> - HyperText Markup Language</li>
+                        <li><span class="term">CSS</span> - Cascading Style Sheets</li>
+                        <li><span class="term">HTTP</span> - Hypertext Transfer Protocol</li>
+                        <li><span class="term">SSL</span> - Secure Sockets Layer</li>
+                        <li><span class="term">TCP</span> - Transmission Control Protocol</li>
+                        <li><span class="term">UDP</span> - User Datagram Protocol</li>
+                        <li><span class="term">DNS</span> - Domain Name System</li>
+                        <li><span class="term">API</span> - Application Programming Interface</li>
+                        <li><span class="term">JSON</span> - JavaScript Object Notation</li>
+                        <li><span class="term">XML</span> - eXtensible Markup Language</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Forms Section -->
+            <div class="forms-section">
+                <div class="nes-container is-dark with-title fade-in">
+                    <p class="title">Web Tools & Forms</p>
+                    <div class="form-grid">
+                        <div class="form-column">
+                            <div class="nes-field">
+                                <label for="domain-input">Domain/URL Check:</label>
+                                <input type="text" id="domain-input" class="nes-input" placeholder="Enter domain...">
+                            </div>
+                            
+                            <div class="nes-field">
+                                <label for="port-input">Port Scanner:</label>
+                                <input type="text" id="port-input" class="nes-input" placeholder="Enter IP:Port...">
+                            </div>
+
+                            <div class="nes-field">
+                                <label for="protocol-select">Protocol:</label>
+                                <div class="nes-select">
+                                    <select id="protocol-select">
+                                        <option value="tcp">TCP</option>
+                                        <option value="udp">UDP</option>
+                                        <option value="http">HTTP</option>
+                                        <option value="https">HTTPS</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="nes-field">
+                                <label>
+                                    <input type="checkbox" class="nes-checkbox" id="ssl-check">
+                                    <span>SSL Certificate Check</span>
+                                </label>
+                            </div>
+
+                            <div class="nes-field">
+                                <label>
+                                    <input type="checkbox" class="nes-checkbox" id="whois-check">
+                                    <span>WHOIS Lookup</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-column">
+                            <div class="nes-field">
+                                <label for="custom-headers">Custom Headers:</label>
+                                <textarea id="custom-headers" class="nes-textarea" placeholder="Enter custom headers..."></textarea>
+                            </div>
+
+                            <div class="nes-field">
+                                <label for="user-agent">User Agent:</label>
+                                <div class="nes-select">
+                                    <select id="user-agent">
+                                        <option value="default">Default</option>
+                                        <option value="chrome">Chrome</option>
+                                        <option value="firefox">Firefox</option>
+                                        <option value="safari">Safari</option>
+                                        <option value="edge">Edge</option>
+                                        <option value="mobile">Mobile</option>
+                                        <option value="bot">Bot</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="nes-field">
+                                <label>
+                                    <input type="radio" class="nes-radio" name="scan-type" value="quick">
+                                    <span>Quick Scan</span>
+                                </label>
+                            </div>
+
+                            <div class="nes-field">
+                                <label>
+                                    <input type="radio" class="nes-radio" name="scan-type" value="deep">
+                                    <span>Deep Scan</span>
+                                </label>
+                            </div>
+
+                            <button type="button" class="nes-btn is-primary" onclick="runScan()">
+                                <i class="fas fa-search"></i> Run Scan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Block Section -->
+            <div class="nes-container is-dark with-title fade-in">
+                <p class="title">Code Sharing</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Example API Response</span>
+                        <button class="copy-btn" onclick="copyCode()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-content" id="code-content">{
+  "<span class="keyword">ip</span>": "<span class="string">{{ ip_show }}</span>",
+  "<span class="keyword">location</span>": {
+    "<span class="keyword">country</span>": "<span class="string">{{ location.country }}</span>",
+    "<span class="keyword">city</span>": "<span class="string">{{ location.city }}</span>",
+    "<span class="keyword">region</span>": "<span class="string">{{ location.region }}</span>"
+  },
+  "<span class="keyword">isp</span>": {
+    "<span class="keyword">org</span>": "<span class="string">{{ isp.org }}</span>",
+    "<span class="keyword">as</span>": "<span class="string">{{ isp.as }}</span>"
+  },
+  "<span class="keyword">security</span>": {
+    "<span class="keyword">is_proxy</span>": <span class="number">{{ security.is_proxy }}</span>,
+    "<span class="keyword">is_tor</span>": <span class="number">{{ security.is_tor }}</span>,
+    "<span class="keyword">is_vpn</span>": <span class="number">{{ security.is_vpn }}</span>
+  },
+  "<span class="keyword">timestamp</span>": "<span class="string">{{ timestamp }}</span>"
+}</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-text">
+                <p>BITWORKS.GE - IP Tools & Web Utilities</p>
+                <p>Client data is not recorded, NO third-party websites and API keys are used.</p>
+                <p>For any reason: system@bitworks.ge</p>
+                <p>Since 2009 © BITWORKS.GE</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle i');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeToggle.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.className = 'fas fa-sun';
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Copy Code Function
+        function copyCode() {
+            const codeContent = document.getElementById('code-content');
+            const textToCopy = codeContent.textContent || codeContent.innerText;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Run Scan Function
+        function runScan() {
+            const scanBtn = document.querySelector('.nes-btn.is-primary');
+            const originalText = scanBtn.innerHTML;
+            
+            scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            scanBtn.disabled = true;
+            
+            // Simulate scan process
+            setTimeout(() => {
+                scanBtn.innerHTML = '<i class="fas fa-check"></i> Scan Complete!';
+                
+                setTimeout(() => {
+                    scanBtn.innerHTML = originalText;
+                    scanBtn.disabled = false;
+                }, 2000);
+            }, 3000);
+        }
+
+        // Make info values selectable for easy copying
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoValues = document.querySelectorAll('.info-value');
+            infoValues.forEach(value => {
+                value.addEventListener('click', function() {
+                    // Create a range and select the text
+                    const range = document.createRange();
+                    range.selectNodeContents(this);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                });
+            });
+
+            // Add fade-in animation to elements
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.nes-container').forEach(container => {
+                observer.observe(container);
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const navMenu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+            const navContainer = document.querySelector('.nav-container');
+            
+            if (!navContainer.contains(e.target) && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

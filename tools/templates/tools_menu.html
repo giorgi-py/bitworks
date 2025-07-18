@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<div class="col-md-3">
+                <div class="nes-container is-dark">
+                    <ul class="service-list">
+                        <li><a href="{% url 'check_port' %}" style="{% if '/tools/check-port/' in request.path %}background-color:rgba(55, 219, 21, 0.2);{% endif %}color: #37db15;">>{% if '/tools/check-port/' in request.path %}_{% endif %}{% trans 'Check Port' %}</a></li>
+                        <li><a href="{% url 'dns_lookup_url' %}" style="{% if '/tools/dns-lookup/' in request.path %}background-color:rgba(55, 219, 21, 0.2);{% endif %}color: #37db15;">>{% if '/tools/dns-lookup/' in request.path %}_{% endif %}{% trans 'Dns Lookup' %}</a></li>
+                    </ul>
+                </div>
+            </div>

@@ -1,0 +1,7 @@
+{% if message %}
+    {% if valid %}
+        <small class="nes-text is-success">{{ message }}</small>
+    {% else %}
+        <small class="nes-text is-error">{{ message }}</small>
+    {% endif %}
+{% endif %}

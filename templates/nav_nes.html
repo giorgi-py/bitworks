@@ -1,0 +1,38 @@
+<div class="container-sm">
+    <div class="nes-container is-dark is-centered is-nav" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="navbar-brand">
+            <a href="{% url 'homeurl' %}" style="text-decoration: none; color: white;">
+                <h3 style="margin: 0;">Bitworks.ge</h3>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <a href="{% url 'homeurl' %}"><button class="{% if request.resolver_match.url_name == 'homeurl' %}nes-btn{% else %}nes-btn is-warning{% endif %}">Home</button></a>
+            <a href="{% url 'check_port' %}"><button class="{% if '/tools/' in request.path %}nes-btn{% else %}nes-btn is-warning{% endif %}">Tools</button></a>
+            <!--<a href="{% url 'servicesurl' %}"><button class="{% if '/services/' in request.path %}nes-btn{% else %}nes-btn is-warning{% endif %}">Services</button></a>-->
+            {% comment %} <a href="{% url 'abouturl' %}"><button class="{% if request.resolver_match.url_name == 'abouturl' %}nes-btn{% else %}nes-btn is-warning{% endif %}">About</button></a> {% endcomment %}
+            <!--<a href="{% url 'contacts_url' %}"><button class="{% if request.resolver_match.url_name == 'contacts_url' %}nes-btn{% else %}nes-btn is-warning{% endif %}">Contacts</button></a>-->
+        </div>
+        <div class="hamburger-menu">
+            <button class="hamburger-btn nes-btn is-warning" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+    </div>
+</div>
+    
+
+    <div class="mobile-menu" id="mobileMenu">
+    <a href="{% url 'homeurl' %}"><button class="{% if request.resolver_match.url_name == 'homeurl' %}nes-btn{% else %}nes-btn is-warning{% endif %}">Home</button></a>
+            <a href="{% url 'check_port' %}"><button class="{% if '/tools/' in request.path %}nes-btn{% else %}nes-btn is-warning{% endif %}">Tools</button></a>
+            <!--<a href="{% url 'servicesurl' %}"><button class="{% if '/services/' in request.path %}nes-btn{% else %}nes-btn is-warning{% endif %}">Services</button></a>-->
+            {% comment %} <a href="{% url 'abouturl' %}"><button class="{% if request.resolver_match.url_name == 'abouturl' %}nes-btn{% else %}nes-btn is-warning{% endif %}">About</button></a> {% endcomment %}
+            <!--<a href="{% url 'contacts_url' %}"><button class="{% if request.resolver_match.url_name == 'contacts_url' %}nes-btn{% else %}nes-btn is-warning{% endif %}">Contacts</button></a>-->
+</div>
+</div>
+<script>
+    function toggleMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenu.classList.toggle('show');
+}
+</script>

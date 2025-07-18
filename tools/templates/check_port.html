@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Check Port' %}{%endblock%}
+{% block pagetitle %}{% trans 'Check Port' %}{% endblock %}
+{% block content %}
+    <div class="container-sm services-container">
+        <div class="row">
+            {% include 'tools_menu.html' %}
+            <div class="col-md-9">
+                <div class="nes-container is-dark with-title" style="min-height:240px;">
+                    <h2 class="title">Tools > Check port</h2> 
+                    <form method="post" action="{% url 'check_port' %}"
+                        hx-post="{% url 'check_port' %}"
+                        hx-target="#port-results"
+                        hx-swap="innerHTML">
+                        {% csrf_token %}
+    
+                        <div class="nes-field">
+                            <label for="host">Host/IP Address: (default is current)</label>
+                            <input type="text" id="host" name="host" class="nes-input" 
+                                value="{{ ip }}" required
+                                hx-trigger="blur"
+                                hx-post="{% url 'validate_host' %}"
+                                hx-target="#host-validation">
+                            <div id="host-validation"></div>
+                        </div>
+                        
+                        <div class="nes-field">
+                            <label for="port">Port:</label>
+                            <input type="number" id="port" name="port" class="nes-input" 
+                                min="1" max="65535" placeholder="80" required>
+                        </div>
+                        
+                        <div class="nes-field">
+                            <label for="timeout">Timeout (seconds):</label>
+                            <input type="number" id="timeout" name="timeout" class="nes-input" 
+                                min="1" max="30" value="5">
+                        </div>
+                        
+                        <button type="submit" class="nes-btn is-warning">
+                            <span class="htmx-indicator">
+                                <i class="nes-icon is-small is-transparent"></i>
+                            </span>
+                            Check Port
+                        </button>
+                        
+                        <!-- Results container - now shows/hides with HTMX -->
+                        <div id="port-results" style="margin-top: 1rem; border-left: solid 2px; border-color: #37db158a; padding: 0 0 0 10px;">
+                        <!-- HTMX responses will populate this -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+{% endblock content %}

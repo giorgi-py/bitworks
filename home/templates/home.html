@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Home' %}{%endblock%}
+{% block pagetitle %}Home{% endblock %}
+{% block content %}
+<!-- Main Content -->
+                <!-- <div>
+                    <span class="prompt">user@bitworks:~$</span> ./welcome.sh
+                </div>
+                <h1>Welcome to the Bitworks.Ge</h1>
+                <p>IP Address and public data<span class="cursor">_</span></p> -->
+                <!-- OLD SECTION
+                <div class="section">
+                    <h2>System Status Ok!</h2>
+                    <div class="info-row">
+                      <span class="info-label"><span class="prompt">></span> IP Address:</span>
+                      <span class="info-value">{{ show_ip }}</span>
+                    </div>
+                  
+                    <div class="info-row">
+                        <span class="info-label"><span class="prompt">></span> Location:</span>
+                        <span class="info-value">{{ user_info.city }}, {{ user_info.country_name }}</span>
+                    </div>
+                  
+                    <div class="info-row">
+                        <span class="info-label"><span class="prompt">></span> ISP:</span>
+                        <span class="info-value">{{ user_info.org }}</span>
+                    </div>
+                  
+                    <div class="info-row">
+                        <span class="info-label"><span class="prompt">></span> OS:</span>
+                        <span class="info-value">{{ user_info.os }}</span>
+                    </div>
+                </div> -->
+                <div class="split-container">
+    <!-- Left section - Your existing system status -->
+                    <div class="split-section">
+                        <h2>System Status</h2>
+                        <div class="info-row">
+                            <span class="info-label"><span class="prompt">></span> IP Address:</span>
+                            <span class="info-value">{{ show_ip }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span class="prompt">></span> Location:</span>
+                            <span class="info-value">{{ user_info.city }}, {{ user_info.country_name }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span class="prompt">></span> ISP:</span>
+                            <span class="info-value">{{ user_info.org }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label"><span class="prompt">></span> OS:</span>
+                            <span class="info-value">{{ user_info.os }}</span>
+                        </div>
+                        <!-- ... your other info rows ... -->
+                    </div>
+                    <!-- Right section - Your new data -->
+                    <div class="split-section alt">
+                        <h2>Your New Data</h2>
+                        <!-- Add whatever data you want here -->
+                    </div>
+                </div>
+                <div class="section">
+                    <h2>Mission Briefing</h2>
+                    <p>Welcome aboard the Cosmic Terminal, explorer. Your mission: navigate through the digital cosmos using our state-of-the-art 8-bit interface. Experience the perfect blend of retro computing and modern space exploration.</p>
+                    <br>
+                    <button class="btn">Launch Mission</button>
+                    <button class="btn">Scan Systems</button>
+                </div>
+                
+                <div class="section">
+                    <h3>Available Commands</h3>
+                    <p><span class="prompt">></span> ./explore_galaxy.sh - Begin cosmic journey</p>
+                    <p><span class="prompt">></span> ./scan_systems.sh - Analyze nearby systems</p>
+                    <p><span class="prompt">></span> ./upgrade_ship.sh - Enhance your vessel</p>
+                    <p><span class="prompt">></span> ./contact_earth.sh - Send transmission home</p>
+                </div>
+                
+                <br>
+                <p><span class="prompt">user@cosmic:~$</span> <span class="cursor">_</span></p>
+{% endblock content %}
+
+
