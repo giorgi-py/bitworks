@@ -5,6 +5,11 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from user_agents import parse
 
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
+def custom_500(request):
+    return render(request, '500.html', status=500)
 
 def parse_browser_from_user_agent(user_agent_string):
     user_agent = parse(user_agent_string)
