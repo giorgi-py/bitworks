@@ -32,7 +32,7 @@ DEBUG = env('DEBUG')
 #     SECURE_CONTENT_TYPE_NOSNIFF = True
 #     X_FRAME_OPTIONS = 'DENY'
 
-ALLOWED_HOSTS = ['bitworks.ge', 'www.bitworks.ge']
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'http://bitworks.ge',
     'http://www.bitworks.ge',
