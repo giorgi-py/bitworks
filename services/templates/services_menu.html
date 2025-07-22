@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<div class="col-md-3">
+                <div class="nes-container is-dark">
+                    <ul class="service-list">
+                        <li><a href="{% url 'network_services' %}">>{% if '/services/network-services/' in request.path %}_{% endif %}{% trans 'Network Services' %}</a></li>
+                        <li><a href="{% url 'windows_server_url' %}">>{% if '/services/windows-server/' in request.path %}_{% endif %}{% trans 'Windows Server' %}</a></li>
+                    </ul>
+                </div>
+            </div>

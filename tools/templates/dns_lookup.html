@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Dns Lookup' %}{%endblock%}
+{% block pagetitle %}{% trans 'Dns Lookup' %}{% endblock %}
+{% block content %}
+<div class="container-sm services-container">
+    <div class="row">
+        {% include 'tools_menu.html' %}
+        <div class="col-md-9">
+            <div class="nes-container is-dark with-title" style="min-height:240px;">
+                <h2 class="title">Tools > Dns Lookup</h2>
+                <!-- Step 1: Basic DNS Lookup Form -->
+                <form method="post" action="{% url 'dns_lookup_url' %}">
+                    {% csrf_token %}
+
+                    <div class="nes-field">
+                        <label for="domain">Domain/IP Address:</label>
+                        <input type="text" id="domain" name="domain" class="nes-input"
+                            placeholder="example.com or 8.8.8.8" required>
+                    </div>
+
+                    <div class="nes-field">
+                        <label for="lookup_type">Lookup Type:</label>
+                        <div class="nes-select">
+                            <select id="lookup_type" name="lookup_type" required>
+                                <option value="A">A - IPv4 Address</option>
+                                {% comment %} <option value="">Select lookup type</option> {% endcomment %}
+                                <option value="all">All Records</option>
+                                <option value="AAAA">AAAA - IPv6 Address</option>
+                                <option value="MX">MX - Mail Exchange</option>
+                                <option value="CNAME">CNAME - Canonical Name</option>
+                                <option value="NS">NS - Name Server</option>
+                                <option value="TXT">TXT - Text Record</option>
+                                <option value="SOA">SOA - Start of Authority</option>
+                                <option value="PTR">PTR - Reverse DNS</option>
+                                <option value="SRV">SRV - Service Record</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="nes-field">
+                        <label for="dns_server">DNS Server:</label>
+                        <div class="nes-select">
+                            <select id="dns_server" name="dns_server">
+                                <option value="default">System Default</option>
+                                <option value="8.8.8.8">Google DNS (8.8.8.8)</option>
+                                <option value="1.1.1.1">Cloudflare DNS (1.1.1.1)</option>
+                                <option value="9.9.9.9">Quad9 DNS (9.9.9.9)</option>
+                                <option value="custom">Custom DNS Server</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="nes-field" id="custom-dns-field" style="display: none;">
+                        <label for="custom_dns">Custom DNS Server:</label>
+                        <input type="text" id="custom_dns" name="custom_dns" class="nes-input" placeholder="8.8.4.4">
+                    </div>
+
+                    <div class="nes-field">
+                        <label for="timeout">Timeout (seconds):</label>
+                        <input type="number" id="timeout" name="timeout" class="nes-input" min="1" max="30" value="5">
+                    </div>
+
+                    <button type="submit" class="nes-btn is-primary">Lookup DNS</button>
+
+                    <!-- Results will appear here -->
+                    <div id="dns-results" class="nes-container is-rounded" style="margin-top: 1rem; display: none;">
+                        <!-- Results from Django view -->
+                    </div>
+                </form>
+                {% comment %} DNS LOOKUP RESULT START {% endcomment %}
+                {% if result %}
+                <div id="dns-results" style="margin-top: 1rem;">
+                    {% if result.success %}
+                    <h4>{{ result.message }}</h4>
+                    {% if result.lookup_type == 'all' %}
+                    <!-- All records display -->
+                    {% for record_type, records in result.results.items %}
+                    <div style="margin: 1rem 0;">
+                        <h5>{{ record_type }} Records</h5>
+                        <table class="info-table" style="text-align: left;">
+                            <thead>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>TTL</th>
+                                    {% if record_type == 'MX' %}
+                                    <th>Priority</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in records %}
+                                <tr>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.value }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.ttl }}</span></td>
+                                    {% if record_type == 'MX' %}
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.priority }}</span></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <!-- Single record type display -->
+                    <div class="nes-table-responsive">
+                        <table class="info-table" style="text-align: left;">
+                            <thead>
+                                <tr>
+                                    <th>{{ result.record_type }} Record</th>
+                                    <th>TTL</th>
+                                    {% if result.record_type == 'MX' %}
+                                    <th>Priority</th>
+                                    <th>Exchange</th>
+                                    {% elif result.record_type == 'SRV' %}
+                                    <th>Priority</th>
+                                    <th>Weight</th>
+                                    <th>Port</th>
+                                    <th>Target</th>
+                                    {% elif result.record_type == 'SOA' %}
+                                    <th>Serial</th>
+                                    <th>Refresh</th>
+                                    <th>Retry</th>
+                                    <th>Expire</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in result.records %}
+                                <tr>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.value }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.ttl }}</span></td>
+                                    {% if result.record_type == 'MX' %}
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.priority }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.exchange }}</span></td>
+                                    {% elif result.record_type == 'SRV' %}
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.priority }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.weight }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.port }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.target }}</span></td>
+                                    {% elif result.record_type == 'SOA' %}
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.serial }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.refresh }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.retry }}</span></td>
+                                    <td class="value" style="text-align: left;"><span class="ip-highlight">{{ record.expire }}</span></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="nes-container is-rounded is-error">
+                    <p><i class="nes-icon is-small is-close"></i> {{ result.message }}</p>
+                    <p><strong>Domain:</strong> {{ domain }}</p>
+                    <p><strong>Lookup Type:</strong> {{ lookup_type }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% comment %} DNS LOOKUP END {% endcomment %}
+            <script>
+                // Show/hide custom DNS field
+                document.getElementById('dns_server').addEventListener('change', function () {
+                    const customField = document.getElementById('custom-dns-field');
+                    if (this.value === 'custom') {
+                        customField.style.display = 'block';
+                        document.getElementById('custom_dns').required = true;
+                    } else {
+                        customField.style.display = 'none';
+                        document.getElementById('custom_dns').required = false;
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock content %}

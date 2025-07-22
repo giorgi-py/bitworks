@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Services' %}{%endblock%}
+{% block pagetitle %}{% trans 'Services' %}{% endblock %}
+{% block content %}
+    <div class="container-sm services-container">
+        <div class="row">
+            {% include 'tools_menu.html' %}
+            <div class="col-md-9">
+                <div class="nes-container is-dark with-title" style="min-height:240px;">
+                    <h2 class="title">Tools</h2> 
+                    <div id="service-content">
+                    Select a service to view details
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  <!-- conainer end -->
+{% endblock content %}

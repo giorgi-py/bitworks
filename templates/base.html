@@ -1,0 +1,70 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>IP Tools & Network Analysis - Bitworks.ge</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKLG569XYX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-VKLG569XYX');
+    </script>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://bitworks.ge">
+    <meta name="description" content="Free IP address checker, port scanner, and network tools. Educational blog articles and tutorials. Based in Georgia since 2009.">
+    <meta name="keywords" content="ip checker, port scanner, network tools, web analysis, ip lookup, georgia">
+    <meta name="og:title" property="og:title" content="BITWORKS.GE - Check IP Address, Open Ports, IP Tools, Web Tools">
+    <meta property="og:description" content="Free IP address checker, port scanner, and network tools. Educational blog articles, Based in Georgia since 2009.">
+    <meta property="og:type" content="website">	
+    <meta property="og:url" content="https://bitworks.ge">
+    <meta property="og:site_name" content="Bitworks.ge">
+    <script type="application/ld+json">
+    {
+      "@context": "https://bitwokrs.ge",
+      "@type": "IT Services & Solutions",
+      "name": "Bitworks",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Everywhere in Georgia",
+        "addressLocality": "Rustavi",
+        "addressRegion": "Kvemo Kartli",
+        "postalCode": "3700"
+      },
+      "telephone": "+995341250011"
+    }
+    </script>
+    <script src="{% static 'scripts/htmx.min.js' %}"></script>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/nes.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <style>
+        html, body, pre, code, kbd, samp {
+            font-family: "Ubuntu";
+            font-size: 16px;
+        }
+        .htmx-indicator {
+            display: none;
+        }
+        .htmx-request .htmx-indicator {
+            display: inline;
+        }
+        .htmx-request button {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="myVideo">
+        <source src="{% static 'video/bitworks_ge_background.mp4' %}" type="video/mp4">
+    </video> 
+    {% include 'nav_nes.html' %}
+    {% block content %}{% endblock content %}
+    {% include 'footer.html' %}
+</body>
+</html>

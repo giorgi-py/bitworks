@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Home' %}{%endblock%}
+{% block content %}
+
+<!-- <div class="hero-image">
+    <img src="{% static 'images/home-hero.png' %}" alt="Bitworks.ge home" loading="lazy" >
+</div> -->
+<div class="container">
+  <div class="left-col">
+    <!-- Left content here -->
+				<table>
+          <caption>IP Address</caption>
+					<thead>
+						<tr>
+							<th>IP Adress</th>
+							<th>{{ show_ip }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Location</td>
+							<td>{{ user_info.city }}, {{ user_info.country_name }}</td>
+						</tr>
+            <tr>
+							<td>ISP</td>
+							<td>{{ user_info.org }}</td>
+						</tr>
+            <tr>
+							<td>OS</td>
+							<td>{{ user_info.os }}</td>
+						</tr>
+					</tbody>
+				</table>
+    <!-- <a href="{% url 'servicesstackurl' %}"><button>Read more</button></a> -->
+  </div>
+<div class="right-col">
+    <!-- Right content here -->
+     HI
+  </div>
+</div>
+
+<div class="container">
+  <div class="left-col">
+    <!-- Left content here -->
+    <p>•→Georgian Bitworks is not just Bits and Works,<br>
+    •→We are sharing our knowladge.<br>
+    •→We are sharing free resources.</p>
+  </div>
+    <div class="right-col">
+      <!-- Right content here -->
+      <p><img src="{% static 'images/home-2.jpg' %}" alt="Bitworks.ge home" loading="lazy" ></p>
+    </div>
+
+
+</div>
+
+
+{% endblock content %}
+
+

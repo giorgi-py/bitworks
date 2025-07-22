@@ -1,0 +1,36 @@
+
+<!-- templates/partials/validation_message.html -->
+ {% if result.success %}
+        <table class="info-table">
+                <tr>
+                        {{ result.message }}
+                        <td class="label">Host:</td>
+                        <td class="value"><span class="ip-highlight">{{ host }}</span></td>
+                </tr>
+                <tr>
+                        <td class="label">Port:</td>
+                        <td class="value"><span class="ip-highlight">{{ port }}</span></td>
+                </tr>
+                <tr>
+                        <td class="label">Status:</td>
+                        <td class="value"><span class="ip-highlight">{{ result.status|upper }}</span></td>
+                </tr>
+        </table>
+{% else %}
+        <table class="info-table">
+                <tr>
+                        {{ result.message }}
+                        <td class="label">Host:</td>
+                        <td class="value"><span class="ip-highlight">{{ host }}</span></td>
+                </tr>
+                <tr>
+                        <td class="label">Port:</td>
+                        <td class="value"><span class="ip-highlight">{{ port }}</span></td>
+                </tr>
+                <tr>
+                        <td class="label">Status:</td>
+                        <td class="value"><span class="ip-highlight" style="color: red;">{{ result.status|upper }}</span></td>
+                </tr>
+        </table>
+    
+{% endif %}

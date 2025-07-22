@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Home' %}{%endblock%}
+{% block pagetitle %}Home{% endblock %}
+{% block content %}
+    <div class="container-sm">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="nes-container is-dark with-title">
+                    <h1 class="title">IP Address</h1>
+                    <div class="table-responsive">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">IP:</td>
+                                <td class="value"><span class="ip-highlight">{{ show_ip }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="label">ISP:</td>
+                                <td class="value"><span class="ip-highlight">{{ user_info.org }}, {{ user_info.asn }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Location:</td>
+                                <td class="value"><span class="ip-highlight">{{ user_info.country_name }},{{ user_info.city }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Browser:</td>
+                                <td class="value"><span class="ip-highlight">{{ user_info.browser }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="label">OS:</td>
+                                <td class="value"><span class="ip-highlight">{{ user_info.os }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Screen:</td>
+                                <td class="value"><span class="ip-highlight" id="resolution-display">loading..</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="nes-container is-dark with-title">
+                    <p class="title">Quick Links</p>
+                    <p style="font-size: small;">
+                        <a href="{% url 'check_port' %}">Port checking tool</a>
+                        ::
+                        <a href="{% url 'dns_lookup_url' %}">DNS Lookup</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="nes-container is-dark with-title" style="min-height:240px;">
+                    <h2 class="title">Tips&Tricks</h2> 
+                    {% comment %} <h3 style="font-size: small;">IP - Internet Protocol</h3>
+                    <h3 style="font-size: small;">WWW - World Wide Web</h3>
+                    <h3 style="font-size: small;">HTML - HyperText Markup Language</h3>
+                    <h3 style="font-size: small;">CSS - Cascading Style Sheets</h3>
+                    <h3 style="font-size: small;">HTTP - Hypertext Transfer Protocol</h3>
+                    <h3 style="font-size: small;">SSL - Secure Sockets Layer</h3>
+                    <h3 style="font-size: small;">TCP - Transmission Control Protocol</h3>
+                    <h3 style="font-size: small;">UDP - User Datagram Protocol</h3> {% endcomment %}
+                    <table class="info-table">
+                        <tr>
+                            <td class="label">WWW</td>
+                            <td class="value"><span class="tips-highlight">World Wide Web</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">ISP</td>
+                            <td class="value"><span class="tips-highlight">Internet Service Provider</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">IP</td>
+                            <td class="value"><span class="tips-highlight">Internet Protocol</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">DHCP</td>
+                            <td class="value"><span class="tips-highlight">Dynamic Host Configuration Protocol</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">DNS</td>
+                            <td class="value"><span class="tips-highlight">Domain Name System</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">VPN</td>
+                            <td class="value"><span class="tips-highlight">Virtual Private Network</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">NAT</td>
+                            <td class="value"><span class="tips-highlight">Network Address Translation</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">LAN</td>
+                            <td class="value"><span class="tips-highlight">Local Area Network</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">WAN</td>
+                            <td class="value"><span class="tips-highlight">Wide Area Network</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('resolution-display').textContent = 
+                `${screen.width}x${screen.height}`;
+        });
+    </script>
+{% endblock content %}

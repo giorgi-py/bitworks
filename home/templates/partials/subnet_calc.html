@@ -1,0 +1,12 @@
+{% if error %}
+  <div class="text-red-500">{{ error }}</div>
+{% else %}
+  <div class="bg-gray-100 p-4 rounded">
+    <p><strong>Network:</strong> {{ network }}</p>
+    <p><strong>Broadcast:</strong> {{ broadcast }}</p>
+    <p><strong>Netmask:</strong> {{ netmask }}</p>
+    <p><strong>Usable Hosts:</strong> {{ num_hosts }}</p>
+    <p><strong>First Host:</strong> {{ first_host }}</p>
+    <p><strong>Last Host:</strong> {{ last_host }}</p>
+  </div>
+{% endif %}

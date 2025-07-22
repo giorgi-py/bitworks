@@ -1,0 +1,17 @@
+<!-- Navigation -->
+<nav>
+    <div class="nav-container">
+        <div class="logo">BITWORKS.GE</div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="{% url 'homeurl' %}" class="{% if request.resolver_match.url_name == 'homeurl' %}active{% endif %}">Home</a></li>
+            <li><a href="{% url 'abouturl' %}" class="{% if request.resolver_match.url_name == 'abouturl' %}active{% endif %}">About</a></li>
+            <li><a href="{% url 'servicesurl' %}" class="{% if request.resolver_match.url_name == 'servicesurl' %}active{% endif %}">Services</a></li>
+            {% comment %} <li><a href="{% url 'homeurl' %}" class="{% if request.resolver_match.url_name == 'homeurl' %}active{% endif %}">Contact</a></li> {% endcomment %}
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Terminal</title>
+    
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">BITWORKS.GE</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <span>Home</span>
+            </div>
+            <div class="terminal-content">
+                <div>
+                    <span class="prompt">user@cosmic:~$</span> ./welcome.sh
+                </div>
+                <br>
+                <h1>Welcome to the Cosmic Terminal</h1>
+                <p>Initializing 8-bit space odyssey<span class="cursor">_</span></p>
+                <br>
+                
+                <div class="section">
+                    <h2>System Status</h2>
+                    <p><span class="prompt">></span> Quantum processors: ONLINE</p>
+                    <p><span class="prompt">></span> Hyperdrive engines: READY</p>
+                    <p><span class="prompt">></span> Cosmic navigation: ACTIVE</p>
+                    <p><span class="prompt">></span> 8-bit graphics: RETRO_MODE</p>
+                </div>
+                
+                <div class="section">
+                    <h2>Mission Briefing</h2>
+                    <p>Welcome aboard the Cosmic Terminal, explorer. Your mission: navigate through the digital cosmos using our state-of-the-art 8-bit interface. Experience the perfect blend of retro computing and modern space exploration.</p>
+                    <br>
+                    <button class="btn">Launch Mission</button>
+                    <button class="btn">Scan Systems</button>
+                </div>
+                
+                <div class="section">
+                    <h3>Available Commands</h3>
+                    <p><span class="prompt">></span> ./explore_galaxy.sh - Begin cosmic journey</p>
+                    <p><span class="prompt">></span> ./scan_systems.sh - Analyze nearby systems</p>
+                    <p><span class="prompt">></span> ./upgrade_ship.sh - Enhance your vessel</p>
+                    <p><span class="prompt">></span> ./contact_earth.sh - Send transmission home</p>
+                </div>
+                
+                <br>
+                <p><span class="prompt">user@cosmic:~$</span> <span class="cursor">_</span></p>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

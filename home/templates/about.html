@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'About' %}{%endblock%}
+{% block pagetitle %}About{% endblock %}
+{% block content %}
+    <div class="container-sm">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="nes-container is-dark with-title">
+                    <h1 class="title">IP Address</h1>
+                    <p style="font-size: small; color: #37db15;">IP: {{ show_ip }}</p>
+                    <p style="font-size: small;">ISP: {{ user_info.org }}</p>
+                    <p style="font-size: small;">Country: {{ user_info.country_name }}</p>
+                    <p style="font-size: small;">Browser: {{ user_info.browser }}</p>
+                </div>
+                <div class="nes-container is-dark with-title">
+                    <p class="title">Client Info</p>
+                    <p style="font-size: small;">Browser: </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="nes-container is-dark with-title" style="min-height:240px;">
+                    <h2 class="title">Tips&Tricks</h2> 
+                    <h3 style="font-size: small;">IP - Internet Protocol</h3>
+                    <h3 style="font-size: small;">WWW - World Wide Web</h3>
+                    <h3 style="font-size: small;">HTML - HyperText Markup Language</h3>
+                    <h3 style="font-size: small;">CSS - Cascading Style Sheets</h3>
+                    <h3 style="font-size: small;">HTTP - Hypertext Transfer Protocol</h3>
+                    <h3 style="font-size: small;">SSL - Secure Sockets Layer</h3>
+                    <h3 style="font-size: small;">TCP - Transmission Control Protocol</h3>
+                    <h3 style="font-size: small;">UDP - User Datagram Protocol</h3>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="nes-container is-dark with-title is-centered">
+                <h2 class="title">Privacy</h2>
+                <p style="font-size: x-small;">Bitworks is showing up just client IP ADDRESS with Browser public information.
+                client data is not recorded, NO third-party websites and API keys are used. <br>!! for any reason system@bitworks.ge !!<br />
+                since 2009 &copy;</p>
+            </div>
+        </div>
+    </div>  <!-- conainer end -->
+{% endblock content %}

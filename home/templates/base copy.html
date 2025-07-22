@@ -1,0 +1,81 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="stylesheet" href="{% static 'css/terminal_style.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/cosmic_style.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'css/nes.css' %}"> {% endcomment %}
+</head>
+<body style="padding: 20px">
+    <div class="bg-stars" id="bg-stars"></div>
+    <main style="width: 1024px; max-width: 100%; margin: 0 auto; z-index: 1;">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 id="headline" style="margin: 0;">
+                <a href="{% url 'homeurl' %}" style="color: inherit; text-decoration: none;">
+                Bitworks.ge
+                </a>
+            </h1>
+            <!-- NAV BAR -->
+            <!-- Menu toggle for mobile -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="menu-label">☰</label>
+            <nav class="menu-content" style="z-index: 1;">
+                <a href="{% url 'homeurl' %}"><button class="{% if request.resolver_match.url_name == 'homeurl' %}active{% endif %}">Home</button></a>
+                <a href="{% url 'abouturl' %}"><button class="{% if request.resolver_match.url_name == 'abouturl'%}active{% endif %}">About us</button></a>
+                <a href="{% url 'servicesurl' %}"><button class="{% if request.resolver_match.url_name == 'servicesurl'%}active{% endif%}">Services</button></a>
+
+                {% comment %} Language Switcher {% endcomment %}
+                <div style="margin-left: auto; display: flex; gap: 0.5rem;">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="en">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="btn {% if LANGUAGE_CODE == 'en' %}btn-primary{% else %}btn-ghost{% endif %}">[EN]</button>
+                    </form>
+
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="ka">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="btn {% if LANGUAGE_CODE == 'ka' %}btn-primary{% else %}btn-ghost{% endif %}">[KA]</button>
+                    </form>
+                </div>
+            </nav>
+        </header>
+        {% block content %}{% endblock content %}
+        <footer class="footer">
+            <hr>
+            bitworks.ge© 2009-2025
+        </footer>
+    </main>
+    
+    {% comment %} <script src="https://unpkg.com/htmx.org@1.9.12"></script> {% endcomment %}
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
