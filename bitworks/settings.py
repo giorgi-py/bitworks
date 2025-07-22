@@ -31,6 +31,7 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+    SECURE_CONTENT_SECURITY_POLICY = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:;"
 
 ALLOWED_HOSTS = ['bitworks.ge', 'www.bitworks.ge']
 CSRF_TRUSTED_ORIGINS = [
